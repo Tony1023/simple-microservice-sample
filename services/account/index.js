@@ -13,7 +13,7 @@ const accountProto = grpc.loadPackageDefinition(packageDef).simple_microservice_
 const { Customer } = require('./models');
 
 const findAccount = async (call, callback) => {
-  const customer = await Customer.findOne({ where: { id: call.request.id }});
+  const customer = await Customer.findByPk(call.request.id);
   callback(null, { ...customer.dataValues });
 }
 
