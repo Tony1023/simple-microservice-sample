@@ -10,14 +10,14 @@ const packageDef = protoLoader.loadSync(`${__dirname}/../protos/account.proto`, 
 });
 const accountProto = grpc.loadPackageDefinition(packageDef).simple_microservice_sample.account;
 
-/**
- * Implements the SayHello RPC method.
- */
-const findAccount = (call, callback) => {
-  callback(null, { message: 'Account info for ' + call.request.name });
+const { Customer } = require('./models');
+
+const findAccount = async (call, callback) => {
+  const customer = await Customer.findOne({ where: { id: call.request.id }});
+  callback(null, { ...customer.dataValues });
 }
 
-(() => {
+(async () => {
   const server = new grpc.Server();
   server.addService(accountProto.Account.service, { findAccount: findAccount });
   server.bindAsync('0.0.0.0:50051', grpc.ServerCredentials.createInsecure(), () => {

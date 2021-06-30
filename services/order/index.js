@@ -13,7 +13,7 @@ const accountProto = grpc.loadPackageDefinition(packageDef).simple_microservice_
   const client = new accountProto.Account('localhost:50051',
     grpc.credentials.createInsecure()
   );
-  client.findAccount({ name: 'TonyLu' }, (err, response) => {
-    console.log('Response: ', response.message);
+  client.findAccount({ id: 'cd79fffb-c998-4958-a34e-ba64a029e993' }, (err, response) => {
+    console.log(`Customer email: ${response.email}, balance: ${response.balance}`);
   });
 })();

@@ -4,6 +4,7 @@
   "description": "Order microservice",
   "main": "index.js",
   "scripts": {
+    "develop": "nodemon .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Zhehao Tony Lu",
@@ -13,5 +14,8 @@
     "@grpc/proto-loader": "^0.5.0",
     "google-protobuf": "^3.0.0",
     "@grpc/grpc-js": "^1.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.8"
   }
 }
