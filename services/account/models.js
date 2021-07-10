@@ -6,7 +6,7 @@ class Customer extends Model { };
  * Doing these set-ups so that db is the same every time the server starts
  * Also avoid setting up npx stuff :D
  */
-(async () => {
+ const init = async () => {
   const dbManager = new Sequelize({
     database: 'postgres',
     host: '127.0.0.1',
@@ -50,7 +50,7 @@ class Customer extends Model { };
   await injectData();
 
 
-})();
+};
 
 const injectData = async () => {
   await Customer.bulkCreate([
@@ -68,5 +68,5 @@ const injectData = async () => {
 }
 
 
-module.exports = { Customer };
+module.exports = { Customer, init };
 

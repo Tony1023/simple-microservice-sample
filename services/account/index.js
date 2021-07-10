@@ -10,7 +10,7 @@ const packageDef = protoLoader.loadSync(`${__dirname}/../protos/account.proto`, 
 });
 const accountProto = grpc.loadPackageDefinition(packageDef).simple_microservice_sample.account;
 
-const { Customer } = require('./models');
+const { Customer, init } = require('./models');
 
 const findAccount = async (call, callback) => {
   const customer = await Customer.findByPk(call.request.id);
@@ -18,6 +18,7 @@ const findAccount = async (call, callback) => {
 }
 
 (async () => {
+  await init();
   const server = new grpc.Server();
   server.addService(accountProto.Account.service, { findAccount: findAccount });
   server.bindAsync('0.0.0.0:50051', grpc.ServerCredentials.createInsecure(), () => {
