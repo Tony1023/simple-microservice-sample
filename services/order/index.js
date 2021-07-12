@@ -1,3 +1,14 @@
+const express = require('express');
+
+const app = express();
+const PORT = 8012;
+
+app.use(express.json());
+app.server = app.listen(PORT, () => {
+  console.log(`Order service listening on port ${PORT}`);
+});
+
+
 const grpc = require('@grpc/grpc-js');
 const protoLoader = require('@grpc/proto-loader');
 const packageDef = protoLoader.loadSync(`${__dirname}/../protos/account.proto`, {
@@ -9,17 +20,11 @@ const packageDef = protoLoader.loadSync(`${__dirname}/../protos/account.proto`, 
 });
 const accountProto = grpc.loadPackageDefinition(packageDef).simple_microservice_sample.account;
 
-const { producer } = require('./kafka');
+const kafka = require('./kafka');
 
 (async () => {
-  await producer.connect();
-  producer.send({
-    topic: 'order-create-channel',
-    messages: [
-      { value: 'hey' }
-    ],
-  });
-
+  await kafka.init();
+  require('./routes')(app);
   // const client = new accountProto.Account('localhost:50051',
   //   grpc.credentials.createInsecure()
   // );

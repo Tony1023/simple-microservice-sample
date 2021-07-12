@@ -11,6 +11,7 @@ class Customer extends Model { };
     database: 'postgres',
     host: '127.0.0.1',
     dialect: 'postgres',
+    logging: false,
   });
 
   const queryInterface = dbManager.getQueryInterface();
@@ -23,7 +24,8 @@ class Customer extends Model { };
     dialect: 'postgres',
     define: {
       freezeTableName: true,
-    }
+    },
+    logging: false,
   });
   
   Customer.init({

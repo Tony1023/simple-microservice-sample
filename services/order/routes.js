@@ -5,6 +5,5 @@ module.exports = (app) => {
   const router = express.Router();
 
   app.use('/api', router);
-  router.post('/register', controller.register);
-  router.get('/profile', controller.getProfile);
+  router.post('/', controller.createOrder);
 }
