@@ -13,3 +13,4 @@ A simplified 3-microservice E-commerce project that uses kafka and gRPC to commu
 - [x] kafka set up
 - [ ] Orchestrated SAGA (in place of distributed transactions)
 - [ ] Client, like unit tests
+- [ ] Complete README (installation instructions, how to run tests, extensibility etc.)
