@@ -33,6 +33,7 @@ class Customer extends Model { };
       primaryKey: true,
       type: DataTypes.UUID,
       unique: true,
+      defaultValue: Sequelize.UUIDV4,
     },
     email: {
       type: DataTypes.STRING,
