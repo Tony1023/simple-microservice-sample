@@ -12,7 +12,7 @@ channels.executePayment.consumer.run({ eachMessage: async ({ message }) => {
       producer.send({
         topic: 'order-create-status-channel',
         messages: [{ value: JSON.stringify({
-          txnId: order.txnId,
+          id: order.id,
           status: 'payment-executed',
         })}],
       })
@@ -20,8 +20,8 @@ channels.executePayment.consumer.run({ eachMessage: async ({ message }) => {
       producer.send({
         topic: 'order-create-status-channel',
         messages: [{ value: JSON.stringify({
-          status:'insufficient-balance',
-          txnId: order.txnId,
+          status: 'insufficient-balance',
+          id: order.id,
         })}],
       })
     }
@@ -30,7 +30,7 @@ channels.executePayment.consumer.run({ eachMessage: async ({ message }) => {
       topic: 'order-create-status-channel',
       messages: [{ values: JSON.stringify({
         status: 'customer-not-found',
-        txnId: order.txnId,
+        id: order.id,
       })}],
     })
   }

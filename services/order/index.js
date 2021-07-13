@@ -8,6 +8,8 @@ app.server = app.listen(PORT, () => {
   console.log(`Order service listening on port ${PORT}`);
 });
 
+const models = require('./models');
+
 
 const grpc = require('@grpc/grpc-js');
 const protoLoader = require('@grpc/proto-loader');
@@ -23,6 +25,7 @@ const accountProto = grpc.loadPackageDefinition(packageDef).simple_microservice_
 const kafka = require('./kafka');
 
 (async () => {
+  await models.init();
   await kafka.init();
   require('./routes')(app);
   // const client = new accountProto.Account('localhost:50051',

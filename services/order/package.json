@@ -15,6 +15,7 @@
     "express": "^4.17.1",
     "google-protobuf": "^3.0.0",
     "kafkajs": "^1.15.0",
+    "pg": "^8.6.0",
     "sequelize": "^6.6.2"
   },
   "devDependencies": {
