@@ -23,6 +23,7 @@ const init = async () => {
     define: {
       freezeTableName: true,
     },
+    logging: false,
   });
 
   Item.init({
@@ -62,5 +63,4 @@ const injectData = async () => {
 module.exports = {
   init,
   Item,
-  sequelize,
 }
