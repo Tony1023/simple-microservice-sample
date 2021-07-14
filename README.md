@@ -4,7 +4,7 @@ A simplified 3-microservice E-commerce project that uses kafka and gRPC to commu
 
 ## TODO list
 - [ ] Finish the todo list
-- [ ] Simplistic databases that reset everytime they are booted up -*In progress*-
+- [x] Simplistic databases that reset everytime they are booted up
 - [ ] REST endpoints with some classic operations (make order, register, etc.)
   - [ ] Account service
   - [ ] Order service
