@@ -60,7 +60,7 @@ const injectData = async () => {
     {
       id: '4f0ef6d5-14bd-46aa-91db-90667c6993ff',
       email: 'jose@123.com',
-      balance: 0.0,
+      balance: 10.0,
     },
     {
       id: 'cd79fffb-c998-4958-a34e-ba64a029e993',

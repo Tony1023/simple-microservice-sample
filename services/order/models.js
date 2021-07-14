@@ -4,8 +4,6 @@ class Order extends Model { };
 
 class OrderItem extends Model { };
 
-const txnStatus = Sequelize.ENUM('pending', 'successful', 'rejected');
-
 const init = async () => {
   const dbManager = new Sequelize({
     database: 'postgres',
@@ -37,23 +35,25 @@ const init = async () => {
     },
     amount: DataTypes.FLOAT,
     customerId: DataTypes.UUID,
-    status: { 
-      type: txnStatus,
-      defaultValue: 'pending',
+    rejected: { 
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
     },
-    paymentStatus: {
-      type: txnStatus,
-      defaultValue: 'pending',
-    },
-    inventoryStatus: {
-      type: txnStatus,
-      defaultValue: 'pending'
-    },
+    success: { // 0-bit for payment, 1-bit for inventory, so value of 3 means success
+      type: DataTypes.INTEGER,
+      defaultValue: 0,
+    }
   }, { sequelize, modelName: 'Order' });
 
   OrderItem.init({
-    orderId: DataTypes.UUID,
-    itemId: DataTypes.UUID,
+    orderId: {
+      type: DataTypes.UUID,
+      primaryKey: true,
+    },
+    itemId: {
+      type: DataTypes.UUID,
+      primaryKey: true,
+    },
     quantity: DataTypes.INTEGER,
   }, { sequelize, modelName: 'OrderItem' });
 

@@ -13,7 +13,7 @@ const kafka = require('./kafka');
 
 (async () => {
   await models.init();
-  // await kafka.init();
+  await kafka.init();
 
   require('./routes')(app);
 })();

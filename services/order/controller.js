@@ -8,23 +8,27 @@ channels.orderCreateStatus.consumer.run({ eachMessage: async ({ message }) => {
   if (!requestPool[payload.id]) {
     return;
   }
-  const [req, res] = requestPool[payload.id];
+  const [_, res] = requestPool[payload.id];
 
   switch (payload.status) {
     case 'payment-executed':
-      await logic.setOrderStatus(payload.id, {
-        paymentStatus: 'successful',
-      });
-      res.status(200);
+      await logic.setPaymentSuccessul(payload.id);
+      break;
+    case 'items-reserved':
+      await logic.setReservationSuccessul(payload.id);
       break;
     case 'insufficient-balance':
       res.status(400).send('Insufficient balance.');
-      await logic.setOrderStatus(payload.id, {
-        status: 'rejected',
-        paymentStatus: 'rejected',
-      });
+      await logic.rejectOrder(payload.id);
       break;
+    case 'out-of-stock':
+      res.status(400).send('Out of stock.');
+      await logic.rejectOrder(payload.id);
     default: break;
+  }
+
+  if (await logic.isOrderComplete(payload.id)) {
+    res.status(200).send();
   }
 }});
 
@@ -37,7 +41,6 @@ module.exports = {
         return [...items, { itemId: item.id, quantity: item.quantity }];
       }, []),
     };
-    console.log(parsedOrder);
     const order = await logic.createOrder(parsedOrder);
     producer.send({
       topic: 'execute-payment-channel',
@@ -50,7 +53,9 @@ module.exports = {
     producer.send({
       topic: 'reserve-inventory-channel',
       messages: [{ value: JSON.stringify({
-        items: order.items,
+        items: order.items.reduce((items, item) => {
+          return [...items, { id: item.itemId, quantity: item. quantity }];
+        }, []),
         id: order.id,
       })}],
     });
