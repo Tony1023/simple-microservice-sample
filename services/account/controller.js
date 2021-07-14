@@ -5,31 +5,21 @@ const { producer, channels } = require('./kafka');
 channels.executePayment.consumer.run({ eachMessage: async ({ message }) => {
   const order = JSON.parse(message.value.toString());
   const customer = await logic.getCustomerProfileById(order.customerId);
-  if (customer) {
-    if (customer.balance > order.amount) {
-      customer.balance -= order.amount;
-      await customer.save();
-      producer.send({
-        topic: 'order-create-status-channel',
-        messages: [{ value: JSON.stringify({
-          id: order.id,
-          status: 'payment-executed',
-        })}],
-      })
-    } else {
-      producer.send({
-        topic: 'order-create-status-channel',
-        messages: [{ value: JSON.stringify({
-          status: 'insufficient-balance',
-          id: order.id,
-        })}],
-      })
-    }
+  if (customer.balance > order.amount) {
+    customer.balance -= order.amount;
+    await customer.save();
+    producer.send({
+      topic: 'order-create-status-channel',
+      messages: [{ value: JSON.stringify({
+        id: order.id,
+        status: 'payment-executed',
+      })}],
+    })
   } else {
     producer.send({
       topic: 'order-create-status-channel',
-      messages: [{ values: JSON.stringify({
-        status: 'customer-not-found',
+      messages: [{ value: JSON.stringify({
+        status: 'insufficient-balance',
         id: order.id,
       })}],
     })

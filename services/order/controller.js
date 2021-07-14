@@ -24,13 +24,6 @@ channels.orderCreateStatus.consumer.run({ eachMessage: async ({ message }) => {
         paymentStatus: 'rejected',
       });
       break;
-    case 'customer-not-found':
-      res.status(404).send(`Customer id ${req.body.customerId} not found`);
-      await logic.setOrderStatus(payload.id, {
-        status: 'rejected',
-        paymentStatus: 'rejected',
-      });
-      break;
     default: break;
   }
 }});
@@ -54,15 +47,13 @@ module.exports = {
         id: order.id,
       })}],
     });
-    // await producer.send({
-    //   topic: 'prepare-inventory-channel',
-    //   messages: [
-    //     { value: JSON.stringify({
-    //       items,
-    //       txnId,
-    //     })}
-    //   ],
-    // });
+    producer.send({
+      topic: 'reserve-inventory-channel',
+      messages: [{ value: JSON.stringify({
+        items: order.items,
+        id: order.id,
+      })}],
+    });
     requestPool[order.id] = [req, res];
   },
 };
