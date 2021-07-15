@@ -4,25 +4,19 @@ module.exports = {
   createOrder: async (order) => {
     return Order.create(order, { include: 'items' });
   },
-
-  rejectOrder: async (id) => {
+  
+  findOrderById: async (id) => {
+    return Order.findByPk(id, { include: 'items' });
+  },
+  
+  setPaymentStatus: async (id, status) => {
     const order = await Order.findByPk(id);
-    return order.update({ rejected: true });
+    return order.update({ paymentStatus: status });
   },
 
-  setPaymentSuccessul: async (id) => {
+  setInventoryStatus: async (id, status) => {
     const order = await Order.findByPk(id);
-    return order.update({ success: order.success | 1 });
+    return order.update({ inventoryStatus: status });
   },
 
-  setReservationSuccessul: async (id) => {
-    const order = await Order.findByPk(id);
-    return order.update({ success: order.success | 2 });
-  },
-
-  isOrderComplete: async (id) => {
-    const order = await Order.findByPk(id);
-    console.log(order.success);
-    return (order.success === 3);
-  }
 }

@@ -9,6 +9,10 @@ const channels = {
     consumer: kafka.consumer({ groupId: 'execute-payment-group' }),
     topic: 'execute-payment-channel',
   },
+  refundPayment: {
+    consumer: kafka.consumer({ groupId: 'refund-payment-group' }),
+    topic: 'refund-payment-channel',
+  }
 }
 
 module.exports = {
@@ -20,5 +24,8 @@ module.exports = {
       await channel.consumer.connect();
       await channel.consumer.subscribe({ topic: channel.topic });
     }
+  },
+  sendMessage: (topic, value) => {
+    producer.send({ topic, messages: [{ value: JSON.stringify(value) }]});
   }
 }

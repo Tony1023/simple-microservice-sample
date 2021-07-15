@@ -20,5 +20,12 @@ module.exports = {
         }
       }
     });
+  },
+
+  unreserveItems: async (items) => {
+    for (const item of items) {
+      const inventory = await Item.findByPk(item.id);
+      inventory.update({ quantity: inventory.quantity + item.quantity });
+    }
   }
 }

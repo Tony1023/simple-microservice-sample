@@ -20,5 +20,8 @@ module.exports = {
       await channel.consumer.connect();
       await channel.consumer.subscribe({ topic: channel.topic });
     }
+  },
+  sendMessage: (topic, value) => {
+    producer.send({ topic, messages: [{ value: JSON.stringify(value) }]});
   }
 }

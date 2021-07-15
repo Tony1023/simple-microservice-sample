@@ -3,7 +3,6 @@ const logic = require('./logic');
 
 channels.reserveInventory.consumer.run({ eachMessage: async ({ message }) => {
   const order = JSON.parse(message.value.toString());
-  console.log(order.items);
   try {
     await logic.reserveItems(order.items);
     producer.send({
@@ -22,6 +21,11 @@ channels.reserveInventory.consumer.run({ eachMessage: async ({ message }) => {
       })}]
     });
   }
+}});
+
+channels.unreserveItems.consumer.run({ eachMessage: async ({ message }) => {
+  const order = JSON.parse(message.value.toString());
+  logic.unreserveItems(order.items);
 }});
 
 module.exports = {

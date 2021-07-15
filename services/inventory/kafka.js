@@ -8,6 +8,10 @@ const channels = {
   reserveInventory: {
     consumer: kafka.consumer({ groupId: 'reserve-inventory-group' }),
     topic: 'reserve-inventory-channel',
+  },
+  unreserveItems: {
+    consumer: kafka.consumer({ groupId: 'unreserve-items-group' }),
+    topic: 'unreserve-items-channel'
   }
 };
 
@@ -20,5 +24,8 @@ module.exports = {
       await channel.consumer.connect();
       await channel.consumer.subscribe({ topic: channel.topic });
     }
+  },
+  sendMessage: (topic, value) => {
+    producer.send({ topic, messages: [{ value: JSON.stringify(value) }]});
   }
 }
